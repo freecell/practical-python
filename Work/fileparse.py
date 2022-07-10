@@ -3,16 +3,16 @@
 # Exercise 3.3
 import csv
 
-def parse_csv(filename, types=[str, float], has_headers=False):
+def parse_csv(filename, types=[str, int, float], delimiter= ' '):
     '''
     Parse a CSV file into a list of records
     '''
 
     with open(filename) as f:
-        rows = csv.reader(f)
+        rows = csv.reader(f, delimiter=delimiter)
 
         #read the file headers
-        #headers=next(rows)
+        headers=next(rows)
         
 
         #if select:
@@ -28,13 +28,13 @@ def parse_csv(filename, types=[str, float], has_headers=False):
                 continue
             #if indices:
             #    row = [ row[index] for index in indices]
-            #if types:
-            #    row = [func(val) for func, val in zip(types, row) ]
-            record = tuple(func(val) for func, val in zip(types,row))
+            if types:
+                row = [func(val) for func, val in zip(types, row) ]
+            record = dict(zip(headers,row))
             records.append(record)
 
     return records
 
-portfolio=parse_csv(r'C:\Users\Ohwen\py_projects\learning\practical-python\Work\Data\prices.csv')
+portfolio=parse_csv(r'C:\Users\Ohwen\py_projects\learning\practical-python\Work\Data\portfolio.dat')
 
 print(portfolio)
